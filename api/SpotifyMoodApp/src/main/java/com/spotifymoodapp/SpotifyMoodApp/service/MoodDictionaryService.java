@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -27,9 +28,16 @@ public class MoodDictionaryService {
         return moodDictionaryRepo.save(moodDictionary);
     }
 
-    public Set<MoodDictionary> getAllDictionariesByUser(User user) {
-        return moodDictionaryRepo.findMoodDictionariesByUser(user)
-                .orElseThrow(() -> new NoDictionariesFoundException("No dictionaries for this user"));
+    public Optional<Set<MoodDictionary>> getAllDictionariesByUser(User user) {
+        return moodDictionaryRepo.findMoodDictionariesByUser(user);
+    }
+
+    public Optional<MoodDictionary> findMoodDictionariesById(Long id) {
+        return moodDictionaryRepo.findMoodDictionariesById(id);
+    }
+
+    public Optional<Set<MoodDictionary>> findMoodDictionariesByCollectionId(Long collectionId) {
+        return moodDictionaryRepo.findMoodDictionariesByCollectionId(collectionId);
     }
 
     public void deleteMoodDictionaryEntry(Long id) {

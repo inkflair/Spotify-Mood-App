@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,12 +13,11 @@ import java.util.Set;
 public class User implements Serializable {
     public User() {    }
 
-    public User(Long id, String firstName, String lastName, String userName, Set<MoodDictionary> moodDictionaries) {
+    public User(Long id, String firstName, String lastName, String userName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
-        this.moodDictionaries = moodDictionaries;
     }
 
     public Long getId() {
@@ -59,6 +59,9 @@ public class User implements Serializable {
 
     public void setMoodDictionaries(Set<MoodDictionary> moodDictionaries) {
         this.moodDictionaries = moodDictionaries;
+        for (MoodDictionary m : moodDictionaries) {
+            m.setUser(this);
+        }
     }
 
     @Id
@@ -66,7 +69,7 @@ public class User implements Serializable {
     @Column(nullable = false, updatable = false)
     private Long id;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<MoodDictionary> moodDictionaries;
+    private Set<MoodDictionary> moodDictionaries = new HashSet<>();
     private String firstName;
     private String lastName;
     private String userName;

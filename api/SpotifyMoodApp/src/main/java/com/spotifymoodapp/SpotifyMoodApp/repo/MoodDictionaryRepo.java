@@ -10,5 +10,8 @@ import java.util.Set;
 public interface MoodDictionaryRepo extends JpaRepository<MoodDictionary, Long> {
     void deleteMoodDictionaryById(Long id);
     void deleteMoodDictionaryByCollectionId(Long collectionId);
+
     Optional<Set<MoodDictionary>> findMoodDictionariesByUser(User user);
+    Optional<MoodDictionary> findMoodDictionariesById(Long id);
+    Optional<Set<MoodDictionary>> findMoodDictionariesByCollectionId(Long id);
 }

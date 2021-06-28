@@ -2,6 +2,7 @@ package com.spotifymoodapp.SpotifyMoodApp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class MoodDictionary implements Serializable {
         this.user = user;
         this.mood = mood;
         this.spotifyLink = spotifyLink;
-        this.entryId = collectionId;
+        this.collectionId = collectionId;
     }
 
     public Long getId() {
@@ -53,15 +54,16 @@ public class MoodDictionary implements Serializable {
     }
 
     public Long getCollectionId() {
-        return entryId;
+        return collectionId;
     }
 
-    public void setCollectionId(Long entryId) {
-        this.entryId = entryId;
+    public void setCollectionId(Long collectionId) {
+        this.collectionId = collectionId;
     }
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
     // the mood that will be associated
     private String mood;
@@ -70,6 +72,6 @@ public class MoodDictionary implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
-    @Column(nullable = false, updatable = false)
-    private Long entryId;
+    @Column(nullable = false)
+    private Long collectionId;
 }
